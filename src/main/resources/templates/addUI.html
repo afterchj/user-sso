@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新增用户</title>
+</head>
+<body>
+<h1>注册用户</h1>
+
+
+<form method="post" action="/create">
+    <div>
+        <table>用户名：</table>
+        <input type="text" name="uname">
+    </div>
+    <div>
+        <table>英文名：</table>
+        <input type="text" name="account">
+    </div>
+    <div>
+        <table>密码：</table>
+        <input type="password" name="pwd">
+    </div>
+    <div>
+        <table>确认密码：</table>
+        <input type="password" id="rePwd">
+    </div>
+    <button type=" submit">提交</button>
+</form>
+<script th:src="@{/static/js/jquery-3.2.1.min.js}"></script>
+<script>
+    $("form").submit(function () {
+        let rePwd = $("#rePwd").val();
+        let pwd = $("input[name='pwd']").val();
+        console.log("pwd", pwd, "rePwd", rePwd)
+        if (rePwd != pwd) {
+            alert("输入的两次密码不一样！")
+            return false;
+        }
+    });
+</script>
+</body>
+</html>

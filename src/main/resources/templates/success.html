@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+<h1>登陆成功！</h1>
+<div shiro:authenticated="true">
+    <span>欢迎您：<span th:text="${user.uname}"></span></span>
+</div>
+<div shiro:hasAnyRoles="admin,super">
+    <h3>拥有admin角色</h3>
+    <ul style="list-style: none">
+        <li>
+            <a href="/add">添加用户</a>
+        </li>
+        <li>
+            <a href="/delete">删除用户</a>
+        </li>
+        <li>
+            <a href="/update">更新用户</a>
+        </li>
+        <li>
+            <a href="/list">查看用户</a>
+        </li>
+    </ul>
+</div>
+<div shiro:haspermission="create">
+    <h3>拥有create权限</h3>
+    <ul style="list-style: none">
+        <li>
+            <a href="/create">添加用户</a>
+        </li>
+        <li>
+            <a href="/list">查看用户</a>
+        </li>
+    </ul>
+</div>
+<div shiro:hasanypermissions="create,select">
+    <h3>拥有create或者select权限</h3>
+    <ul style="list-style: none">
+        <li>
+            <a href="/list">查看用户</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

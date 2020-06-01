@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+
+    <style type="text/css">
+        li {
+            list-style: none;
+            float: left;
+            margin-left: 5px;
+        }
+
+        a {
+            text-decoration: none
+        }
+        td{
+            border: 0.5px solid darkgray;
+        }
+    </style>
+</head>
+<body>
+<h1>用户列表！</h1>
+
+<div style="margin: auto">
+    <table style="border: 1px solid grey;border-collapse: collapse;width: 580px">
+        <tr>
+            <td>账号</td>
+            <td>密码</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="user:${users}">
+            <td th:text="${user.uname}"></td>
+            <td th:text="${user.account}"></td>
+            <td>
+                <div shiro:hasRole="admin">
+                    <ul>
+                        <li>
+                            <a href="/delete">删除</a>
+                        </li>
+                        <li>
+                            <a th:href="@{'/editUI?id='+${user.id}}">更新</a>
+                        </li>
+                        <li>
+                            <a href="/select">插看</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--拥有create权限-->
+                <div shiro:hasRole="teacher">
+                    <ul>
+                        <li>
+                            <a href="/add">添加用户</a>
+                        </li>
+                        <li>
+                            <a href="/select">插看用户</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--拥有select权限-->
+                <div shiro:hasRole="student">
+                    <ul>
+                        <li>
+                            <a href="/select">插看用户</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <div shiro:hasPermission="create">
+            <tr>
+                <td colspan="3" style="text-align: left">
+                    <a href="/create">新增用户</a>
+                </td>
+            </tr>
+        </div>
+    </table>
+</div>
+
+<!--<div shiro:hasRole="admin">-->
+<!--<h3>拥有admin角色</h3>-->
+<!--<ul style="list-style: none">-->
+<!--<li>-->
+<!--<a href="/save">添加用户</a>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="/delete">删除用户</a>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="/update">更新用户</a>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="/select">插看用户</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--<div shiro:haspermission="create">-->
+<!--<h3>拥有create权限</h3>-->
+<!--<ul style="list-style: none">-->
+<!--<li>-->
+<!--<a href="/create">添加用户</a>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="/select">插看用户</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--<div shiro:hasanypermissions="create,select">-->
+<!--<h3>拥有create或者select权限</h3>-->
+<!--<ul style="list-style: none">-->
+<!--<li>-->
+<!--<a href="/select">插看用户</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+</body>
+</html>
