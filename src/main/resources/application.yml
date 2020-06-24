@@ -1,0 +1,11 @@
+
+spring:
+  application:
+    name: user-sso
+  profiles:
+    active: demo
+  freemarker:
+    prefer-file-system-access: false
+mybatis:
+  typeAliasesPackage: com.md.after.saas.entity
+  mapperLocations: /mapper/*Mapper.xml

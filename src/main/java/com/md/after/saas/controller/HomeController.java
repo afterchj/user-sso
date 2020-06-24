@@ -9,19 +9,23 @@ import com.md.after.saas.service.UserRoleService;
 import com.md.after.saas.service.UserService;
 import com.md.after.saas.utils.Encryption;
 import org.apache.commons.lang3.StringUtils;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -36,20 +40,24 @@ public class HomeController {
     @Autowired
     private UserRoleService userRoleService;
 
-    @RequestMapping(value = {"/", "index"}, method = RequestMethod.GET)
-    public String index() {
+    @GetMapping()
+    public String login() {
         return "login";
     }
 
-    @RequestMapping("/add")
+    @RequestMapping("/addUI")
     public String newUser() {
         return "addUI";
+    }
+
+    @GetMapping("/forbid")
+    public String forbid() {
+        return "forbidden";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(User user, HttpSession session, ModelMap map) {
         logger.warn("userName {} pwd {}", user.getUname(), user.getPwd());
-
         String userName = user.getUname();
         String pwd = user.getPwd();
         String mobile = user.getMobile();
@@ -111,4 +119,9 @@ public class HomeController {
         return "list";
     }
 
+    @RequiresPermissions("user:update")
+    @RequestMapping("/updateUI")
+    public String update() throws Exception {
+        return "addUI";
+    }
 }

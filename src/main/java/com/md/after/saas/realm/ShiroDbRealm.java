@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 public class ShiroDbRealm extends AuthorizingRealm {
@@ -39,7 +41,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
         String username = (String) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.setRoles(new HashSet<>(userExtendDao.getRoles(username)));
-        authorizationInfo.setStringPermissions(new HashSet<>(userExtendDao.getPermissions(username)));
+        List permissions = userExtendDao.getPermissions(username);
+//        logger.warn("permission {}", permissions);
+        authorizationInfo.setStringPermissions(new HashSet<>(permissions));
         return authorizationInfo;
     }
 
@@ -50,7 +54,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
         String username = (String) token.getPrincipal();
         User user = userExtendDao.selectByUsername(username);
-        logger.warn("user {}", user);
+        logger.warn("doGetAuthenticationInfo {}", user);
 
         AuthenticationInfo info = null;
         if (null != user) {
